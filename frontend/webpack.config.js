@@ -1,4 +1,5 @@
 const path = require('path')
+const miniCssExtractPlugin = require('mini-css-extract-plugin');
 
 function getRelativePath () {
     if(arguments.length === 0) {
@@ -15,6 +16,11 @@ module.exports = {
         path:  getRelativePath('public'),
         filename: 'app.js'
     },
+    plugins: [
+        new miniCssExtractPlugin({
+            filename: 'app.css'
+        })
+    ],  
     module: {
         rules: [
             { 
@@ -23,8 +29,20 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     presets: ['@babel/preset-env', '@babel/preset-react'],
-                },
-                
+                    plugins: ['@babel/plugin-proposal-object-rest-spread']
+                }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: miniCssExtractPlugin.loader, 
+                        options: {
+                            publicPath: getRelativePath('public'),
+                        }
+                    },
+                    'css-loader'
+                ]
             }
         ]
     }
