@@ -1,5 +1,5 @@
 const path = require('path')
-const miniCssExtractPlugin = require('mini-css-extract-plugin');
+const miniCssExtractPlugin = require('mini-css-extract-plugin')
 
 function getRelativePath () {
     if(arguments.length === 0) {
@@ -15,6 +15,12 @@ module.exports = {
     output: {
         path:  getRelativePath('public'),
         filename: 'app.js'
+    },
+    resolve: {
+        extensions: ['.js', '.jsx'],
+        alias: {
+            modules: getRelativePath('node_modules')
+        }
     },
     plugins: [
         new miniCssExtractPlugin({
@@ -43,6 +49,10 @@ module.exports = {
                     },
                     'css-loader'
                 ]
+            },
+            {
+                test: /\.woff|.woff2|.ttf|.eot|.svg*.*$/,
+                type: 'asset/inline'
             }
         ]
     }
